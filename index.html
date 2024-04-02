@@ -2,26 +2,13 @@
 <html>
 <head>
   <title>Rotate</title>
-  <style type="text/css">
-    body { background: #343c44;}
-    .container { width: 2154px; height: 2143px; margin: 0 auto; }
-  </style>
+  <link href="css/estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="container">
   <canvas id="fondo" width="2154" height="2143"></canvas>
-  <img  
-  style="display:scroll; 
-  position:fixed; 
-  bottom:0px; 
-  right:0px;
-  top: 250px;
-  left: 0px;
-  margin: 0 auto;
-  border-radius: 50%;" 
-  src="estatica_ruleta_1658x1647.png"/>
+  <img  src="img/estatica_ruleta_1658x1647.png"/>
 </div>
-
 <script>
   var CANVAS_WIDTH = 2154;
   var CANVAS_HEIGHT = 2143;
@@ -31,7 +18,6 @@
   var IMAGE_HEIGHT = 2143;
   var R = IMAGE_WIDTH / 2;
   var MAXRAD = Math.PI * 2;
-  //var cnv = document.querySelector('canvas');
   var cnv = document.getElementById('fondo');
   var ctx = cnv.getContext('2d');
 
@@ -49,48 +35,8 @@
     const angle = -state.angle;
     const [x, y] = xyFromAngle(angle);
     const [x0, y0] = xyFromAngle(0);
-  /*
-    drawArc('#FF8AD8', CX, CY, R / 2, 0, angle, 1);
-    // Angle 0º Line
-    drawLine('#9A9EA3', CX, CY, x0, y0);
-    // Angle 0º Dot
-    drawDot('#9A9EA3', x0, y0);
-
-
-    drawArc('#9A9EA3', CX, CY, R, 0, MAXRAD);
-
-    // Current angle line
-    drawLine('#FFF70D', CX, CY, x, y);
-    // Current angle dot
-    drawDot('#2AFF5A', x, y);
-
-    // Center dot
-    drawDot('#01B3FF', CX, CY);
-    */
-  }
-/*
-  function drawArc(color, x, y, r, starts, ends, dir) {
-    ctx.beginPath();
-    ctx.arc(x, y, r, starts, ends, dir);
-    ctx.strokeStyle = color;
-    ctx.stroke();
   }
 
-  function drawLine(color, x1, y1, x2, y2) {
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.strokeStyle = color;
-    ctx.stroke();
-  }
-
-  function drawDot(color, x, y) {
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.arc(x, y, 15, 0, MAXRAD);
-    ctx.fill();
-  }
-*/
   function angleFromEvent(e) {
     const x = e.clientX - cnv.offsetLeft;
     const y = e.clientY - cnv.offsetTop;
@@ -155,8 +101,7 @@
     draw();
   };
 
-  image.src = 'ruleta_fondo_2154x2143.png';
+  image.src = 'img/ruleta_fondo_2154x2143.png';
 </script>
-
 </body>
 </html>
