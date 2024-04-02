@@ -1,5 +1,5 @@
-# Ruleta de Anticonceptivos
+# Ruleta de Anticonceptivo 
 ## By
 @Andrexifor
-# Represenatcion Grafica
+# Represenatción Gráfica
 [https://dirisruleta.000webhostapp.com/](https://dirisruleta.000webhostapp.com/)
