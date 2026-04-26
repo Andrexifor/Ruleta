@@ -1,26 +1,24 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rotate</title>
   <link href="css/estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div class="container">
-  <canvas id="fondo" width="2154" height="2143"></canvas>
-  <img  src="img/estatica_ruleta_1658x1647.png"/>
+<div class="container" id="container">
+  <canvas id="fondo"></canvas>
+  <img class="overlay-img" src="img/estatica_ruleta_1658x1647.png"/>
 </div>
 <script>
-  var CANVAS_WIDTH = 2154;
-  var CANVAS_HEIGHT = 2143;
-  var CX = CANVAS_WIDTH / 2;
-  var CY = CANVAS_HEIGHT / 2;
-  var IMAGE_WIDTH = 2154;
-  var IMAGE_HEIGHT = 2143;
-  var R = IMAGE_WIDTH / 2;
+  const ORIG_W = 2154;
+  const ORIG_H = 2143;
+  const container = document.getElementById('container');
+  const cnv = document.getElementById('fondo');
+  const ctx = cnv.getContext('2d');
+  let CW, CH, CX, CY, R;
   var MAXRAD = Math.PI * 2;
-  var cnv = document.getElementById('fondo');
-  var ctx = cnv.getContext('2d');
-
   ctx.lineWidth = 7;
 
   var image = new Image();
@@ -31,6 +29,16 @@
     angle: 0
   };
 
+  function resize() {
+    const size = Math.min(container.clientWidth, container.clientHeight);
+    CW = CH = size;
+    CX = CY = size / 2;
+    R  = size / 2;
+    cnv.width  = size;
+    cnv.height = size;
+    if (image.complete && image.naturalWidth > 0) draw();
+  }
+
   function drawArtifacts() {
     const angle = -state.angle;
     const [x, y] = xyFromAngle(angle);
@@ -38,9 +46,9 @@
   }
 
   function angleFromEvent(e) {
-    const x = e.clientX - cnv.offsetLeft;
-    const y = e.clientY - cnv.offsetTop;
-
+    const rect = cnv.getBoundingClientRect();
+    const x = e.clientX - rect.left;          // ← ANTES: e.clientX - cnv.offsetLeft
+    const y = e.clientY - rect.top;           // ← ANTES: e.clientY - cnv.offsetTop
     return Math.atan2(
       (x - CX) / R,
       (y - CY) / R
@@ -55,21 +63,12 @@
   }
 
   function draw() {
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
+    ctx.clearRect(0, 0, CW, CH);   // ← ANTES: CANVAS_WIDTH, CANVAS_HEIGHT
     ctx.translate(CX, CY);
     ctx.rotate(-state.angle);
-    ctx.drawImage(image,
-      -IMAGE_WIDTH / 2,
-      -IMAGE_HEIGHT / 2,
-      IMAGE_WIDTH,
-      IMAGE_HEIGHT
-    );
+    ctx.drawImage(image, -CW / 2, -CH / 2, CW, CH); // ← ANTES: IMAGE_WIDTH/HEIGHT fijos
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-    if (state.isDown) {
-      drawArtifacts();
-    }
+    if (state.isDown) drawArtifacts();
   }
 
   cnv.onmousedown = function(e) {
@@ -97,11 +96,28 @@
     draw();
   }
 
-  image.onload = function() {
-    draw();
-  };
+cnv.addEventListener('touchstart', e => {
+    e.preventDefault();
+    cnv.onmousedown(e.touches[0]);
+  }, { passive: false });
 
+  cnv.addEventListener('touchmove', e => {
+    e.preventDefault();
+    cnv.onmousemove(e.touches[0]);
+  }, { passive: false });
+
+  cnv.addEventListener('touchend', e => {
+    e.preventDefault();
+    cnv.onmouseup(e.changedTouches[0]);
+  }, { passive: false });
+
+  image.onload = function() { draw(); };
   image.src = 'img/ruleta_fondo_2154x2143.png';
+
+  const ro = new ResizeObserver(() => resize());
+  ro.observe(container);
+  resize(); // llamada inicial
+
 </script>
 </body>
 </html>
