@@ -2,4 +2,4 @@
 ## By
 @Andrexifor
 # Represenatción Gráfica
-[https://dirisruleta.000webhostapp.com/](https://dirisruleta.000webhostapp.com/)
+[https://andrexifor.github.io/Ruleta/](https://andrexifor.github.io/Ruleta/)
